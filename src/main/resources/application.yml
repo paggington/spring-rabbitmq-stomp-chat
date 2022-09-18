@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    password: root
+    username: postgres
+    driver-class-name: org.postgresql.Driver
+  rabbitmq:
+    host: localhost
+    username: guest
+    password: guest
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
