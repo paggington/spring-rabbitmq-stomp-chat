@@ -6,7 +6,10 @@ import {ChatComponent} from './components/chat/chat.component';
 import {MessageComponent} from './components/message/message.component';
 import {ParticipantCreationComponent} from './components/participant-creation/participant-creation.component';
 import {HttpClientModule} from "@angular/common/http";
-import { ChatListComponent } from './components/chat-list/chat-list.component';
+import {ChatListComponent} from './components/chat/chat-list/chat-list.component';
+import {ChatCreateComponent} from './components/chat/chat-create/chat-create.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -14,11 +17,14 @@ import { ChatListComponent } from './components/chat-list/chat-list.component';
     ChatComponent,
     MessageComponent,
     ParticipantCreationComponent,
-    ChatListComponent
+    ChatListComponent,
+    ChatCreateComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

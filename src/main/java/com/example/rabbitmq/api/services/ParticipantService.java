@@ -33,7 +33,7 @@ public class ParticipantService {
     //локальное хранилище участников чата
     private static final Map<String, Participant> participantMap = new ConcurrentHashMap<>();
     //rabbit хранилище участников чата
-    SetOperations<String, Participant> setOperations;
+    private final SetOperations<String, Participant> setOperations;
 
     private final SimpMessagingTemplate simpMessagingTemplate;
 

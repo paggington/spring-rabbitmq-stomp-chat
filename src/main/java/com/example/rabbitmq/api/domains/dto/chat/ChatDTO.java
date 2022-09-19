@@ -16,5 +16,5 @@ public class ChatDTO {
 
     String name;
 
-    Instant createdAt;
+    Long createdAt;
 }

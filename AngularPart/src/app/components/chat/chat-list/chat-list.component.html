@@ -1,0 +1,9 @@
+<div class="container">
+
+  <div class="chats-container">
+    <div class="form-control mt-1" *ngFor="let chat of activeChats">
+      <h2>{{chat.name}} <span style="font-weight: lighter;font-size: medium">{{chat.createdAt | date : "hh:mm a dd MM yy"}}</span></h2>
+      <button class="form-control" (click)="deleteChat(chat?.id)">delete</button>
+    </div>
+  </div>
+</div>

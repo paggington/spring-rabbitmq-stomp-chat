@@ -7,6 +7,7 @@ import com.example.rabbitmq.api.services.ParticipantService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.example.rabbitmq.api.services.MessageService.generateMessageDto;
 
+@Log4j2
 @Controller
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -42,6 +44,7 @@ public class ChatWsController {
 
     @MessageMapping(CREATE_CHAT)
     public void createChat(String chatName) {
+        log.info("Creating chat: " + chatName);
         chatService.createChat(chatName);
     }
 

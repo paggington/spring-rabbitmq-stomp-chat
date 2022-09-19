@@ -11,6 +11,8 @@ export class MessageService {
 
   serverActive: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+  availableChats: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+
   private static SERVER_URL: string = "http://127.0.0.1:8080/ws";
 
   private socket: any;
@@ -26,11 +28,11 @@ export class MessageService {
       this.stomp = Stomp.over(this.socket);
       const _this = this;
       _this.stomp.connect({}, function () {
-
         _this.serverActive.next(true);
-        if (_this.stomp.status === "CONNECTED") {
-          _this.stomp.subscribe('/topic/greetings', (greeting: any) => {
-          });
+        if (_this.socket.readyState === WebSocket.OPEN) {
+          _this.fillChats();
+          _this.subscribeOnChatCreateEvent();
+          _this.subscribeOnChatDeleteEvent();
         }
         _this.stomp.reconnect_delay = 2000;
       }, () => {
@@ -59,9 +61,39 @@ export class MessageService {
   }
 
   public disconnect() {
-    if (this.stomp !== null && this.stomp.status === "CONNECTED") {
+    if (this.stomp !== null) {
       this.stomp.disconnect();
     }
     console.log("Disconnected");
+  }
+
+  public sendCreateChatRequest(chatName: string) {
+    this.stomp.send("/topic/chat.create", {}, chatName);
+  }
+
+  public sendDeleteChatRequest(chatId: string) {
+    this.stomp.send("/topic/chat.delete", {},chatId);
+  }
+
+  public subscribeOnChatCreateEvent() {
+    this.stomp.subscribe("/topic/chat.create.event", () => {
+      this.fillChats();
+    })
+  }
+
+  public subscribeOnChatDeleteEvent() {
+    this.stomp.subscribe("/topic/chat.delete.event", () => {
+      this.fillChats();
+    })
+  }
+
+  public fillChats() {
+    this.fetchActiveChats().subscribe((chats) => {
+      this.availableChats.next(chats);
+    })
+  }
+
+  public fetchActiveChats(): Observable<any> {
+    return this.http.get<any>('http://localhost:8080/api/chats', {});
   }
 }

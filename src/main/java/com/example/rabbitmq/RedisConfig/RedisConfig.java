@@ -20,7 +20,7 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 @Configuration
 @EnableRedisRepositories
 public class RedisConfig {
-    @Value("${redis.database:-1}")
+    @Value("${redis.database:0}")
     Integer redisDatabase;
 
     @Value("${redis.password:}")
@@ -63,7 +63,7 @@ public class RedisConfig {
     }
 
     @Bean
-    public <F, S> HashOperations<F, String, S> hashOperations(@NotNull RedisTemplate<F, S> redisTemplate) {
+    public <F, S> HashOperations<F, String, S> hashOperations(RedisTemplate<F, S> redisTemplate) {
         return redisTemplate.opsForHash();
     }
 

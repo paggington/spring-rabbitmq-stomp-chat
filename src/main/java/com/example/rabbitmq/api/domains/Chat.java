@@ -13,10 +13,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Chat implements Serializable {
-
-    String id = UUID.randomUUID().toString();
+    @Builder.Default
+    String id = UUID.randomUUID().toString().substring(0, 4);
 
     String name;
 
-    Instant createdAt = Instant.now();
+    @Builder.Default
+    Long createdAt = Instant.now().toEpochMilli();
 }

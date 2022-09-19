@@ -6,14 +6,12 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.example.rabbitmq.api.ws.ChatWsController.FETCH_CREATE_CHAT_EVENT;
 import static com.example.rabbitmq.api.ws.ChatWsController.FETCH_DELETE_CHAT_EVENT;
@@ -24,9 +22,9 @@ import static com.example.rabbitmq.api.ws.ChatWsController.FETCH_DELETE_CHAT_EVE
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ChatService {
 
-    SetOperations<String, Chat> chatSetOperations;
-
     private final SimpMessagingTemplate simpMessagingTemplate;
+
+    private final SetOperations<String, Chat> chatSetOperations;
 
     private static final String KEY = "chats";
 
