@@ -13,13 +13,16 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.example.rabbitmq.api.services.MessageService.generateMessageDto;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@CrossOrigin(origins = {"http://localhost:4200"})
 public class ChatWsController {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
@@ -52,7 +55,7 @@ public class ChatWsController {
         return null;
     }
 
-    @SubscribeMapping(FETCH_CREATE_CHAT_EVENT)
+    @SubscribeMapping(FETCH_DELETE_CHAT_EVENT)
     public ChatDTO fetchDeleteChatEvent() {
         return null;
     }
