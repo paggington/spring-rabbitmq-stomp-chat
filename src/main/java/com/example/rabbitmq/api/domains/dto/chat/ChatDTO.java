@@ -1,4 +1,4 @@
-package com.example.rabbitmq.api.domains.dto;
+package com.example.rabbitmq.api.domains.dto.chat;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

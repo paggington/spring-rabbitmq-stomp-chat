@@ -18,8 +18,6 @@ public class ParticipantWsController {
 
     private final ParticipantService participantService;
 
-    private final SimpMessagingTemplate simpMessagingTemplate;
-
     public static final String FETCH_PARTICIPANT_JOINED_CHAT_EVENT = "/topic/chat.{chat_id}.participant.join";
     public static final String FETCH_PARTICIPANT_LEAVED_CHAT_EVENT = "/topic/chat.{chat_id}.participant.leave";
 

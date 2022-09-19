@@ -31,13 +31,13 @@ import static com.example.rabbitmq.api.ws.ParticipantWsController.prepareFetchPa
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ParticipantService {
     //локальное хранилище участников чата
-    private static final Map<String, Participant> participantMap = new ConcurrentHashMap<String, Participant>();
+    private static final Map<String, Participant> participantMap = new ConcurrentHashMap<>();
     //rabbit хранилище участников чата
     SetOperations<String, Participant> setOperations;
 
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    public void handleSubscription(String sessionId, String participantId, String chatId) {
+    public void handleJoinChat(String sessionId, String participantId, String chatId) {
         Participant participant = Participant.builder()
                 .id(participantId)
                 .chatId(chatId)
@@ -49,10 +49,7 @@ public class ParticipantService {
 
         simpMessagingTemplate.convertAndSend(
                 prepareFetchParticipantJoinedChatEvent(FETCH_PARTICIPANT_JOINED_CHAT_EVENT),
-                ParticipantDTO.builder()
-                        .id(participantId)
-                        .enterAt(participant.getEnteredAt())
-                        .build()
+                generateParticipantDto(participant)
         );
     }
 
@@ -76,6 +73,9 @@ public class ParticipantService {
         Optional.ofNullable(headerAccessor.getSessionId())
                 .map(participantMap::remove)
                 .ifPresent(participant -> {
+
+                    log.info("Participant leaved the chat. " + participant.getChatId());
+
                     setOperations.remove(ParticipantKeyHelper.makeKey(participant.getChatId()), participant);
 
                     //отправка сообщения об отключении пользователя
@@ -89,16 +89,20 @@ public class ParticipantService {
                 });
     }
 
-    public void handleJoinChat() {
-
-    }
-
     private static class ParticipantKeyHelper {
+
         private static final String KEY = "chat:{chat_id}:participants:key";
-        private static final String HASH_KEY = "chat:{chat_id}:participants:key";
 
         public static String makeKey(String chatId) {
             return KEY.replace("{chat_id}", chatId);
         }
+
+    }
+
+    public ParticipantDTO generateParticipantDto(Participant participant) {
+        return ParticipantDTO.builder()
+                .id(participant.getId())
+                .enterAt(participant.getEnteredAt())
+                .build();
     }
 }
