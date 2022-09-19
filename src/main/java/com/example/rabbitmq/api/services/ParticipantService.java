@@ -38,6 +38,7 @@ public class ParticipantService {
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     public void handleJoinChat(String sessionId, String participantId, String chatId) {
+        log.info(String.format("User %s joining chat", participantId));
         Participant participant = Participant.builder()
                 .id(participantId)
                 .chatId(chatId)
@@ -68,6 +69,7 @@ public class ParticipantService {
     }
 
     public void handleLeaveChat(AbstractSubProtocolEvent abstractSubProtocolEvent) {
+        log.info("Disconnecting...");
         final SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.wrap(abstractSubProtocolEvent.getMessage());
         //если инстанция юзера существует -> удалить из мап пользователей чата
         Optional.ofNullable(headerAccessor.getSessionId())

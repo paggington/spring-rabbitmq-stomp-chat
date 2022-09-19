@@ -36,7 +36,7 @@ public class RabbitMqConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint(REGISTRY).withSockJS();
+        registry.addEndpoint(REGISTRY).setAllowedOrigins("http://localhost:4200").withSockJS();
     }
 
     @Override
