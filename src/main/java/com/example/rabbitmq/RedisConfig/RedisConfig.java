@@ -2,7 +2,9 @@ package com.example.rabbitmq.RedisConfig;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -48,6 +50,7 @@ public class RedisConfig {
     }
 
     @Bean
+    @Primary
     public <F, S> RedisTemplate<F, S> redisTemplate() {
 
         final RedisTemplate<F, S> redisTemplate = new RedisTemplate<>();
@@ -60,7 +63,7 @@ public class RedisConfig {
     }
 
     @Bean
-    public <F, S> HashOperations<F, String, S> hashOperations(RedisTemplate<F, S> redisTemplate) {
+    public <F, S> HashOperations<F, String, S> hashOperations(@NotNull RedisTemplate<F, S> redisTemplate) {
         return redisTemplate.opsForHash();
     }
 
