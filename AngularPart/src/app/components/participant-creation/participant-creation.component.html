@@ -1,1 +1,10 @@
-<p>participant-creation works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col-9">
+      <input type="text" maxlength="20" placeholder="Nickname" class="form-control" [(ngModel)]="nickname">
+    </div>
+    <div class="col">
+      <button class="btn" (click)="createWithProvidedName()">Create</button>
+    </div>
+  </div>
+</div>

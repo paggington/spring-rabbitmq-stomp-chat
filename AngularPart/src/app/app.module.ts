@@ -10,6 +10,8 @@ import {ChatListComponent} from './components/chat/chat-list/chat-list.component
 import {ChatCreateComponent} from './components/chat/chat-create/chat-create.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from "@angular/forms";
+import { ProfileHolderComponent } from './components/profile-holder/profile-holder.component';
+import { ChatMessagesViewComponent } from './components/chat/chat-messages-view/chat-messages-view.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import {FormsModule} from "@angular/forms";
     MessageComponent,
     ParticipantCreationComponent,
     ChatListComponent,
-    ChatCreateComponent
+    ChatCreateComponent,
+    ProfileHolderComponent,
+    ChatMessagesViewComponent
   ],
   imports: [
     BrowserModule,

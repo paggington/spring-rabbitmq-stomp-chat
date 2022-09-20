@@ -1,5 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MessageService} from "./service/message.service";
+import {ProfileService} from "./service/profile.service";
+import {ParticipantModel} from "./components/participant-creation/models/ParticipantModel";
+import {migrateEntryComponentsUsages} from "@angular/core/schematics/migrations/entry-components/util";
 
 @Component({
   selector: 'app-root',
@@ -9,7 +12,17 @@ import {MessageService} from "./service/message.service";
 export class AppComponent implements OnInit, OnDestroy {
   title = 'AngularPart';
 
-  constructor(private messageService: MessageService) {
+  userHaveProfile: boolean = true;
+
+  constructor(private messageService: MessageService, private profileService: ProfileService) {
+  }
+
+  public setProfileServiceUser(user: any) {
+    console.log('USJDNKJSNDJK',user)
+    if (user) {
+      console.log('USER')
+      this.profileService.currentProfile.next(user);
+    }
   }
 
   ngOnInit(): void {

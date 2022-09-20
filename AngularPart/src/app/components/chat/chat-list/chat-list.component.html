@@ -1,9 +1,22 @@
 <div class="container">
-
   <div class="chats-container">
     <div class="form-control mt-1" *ngFor="let chat of activeChats">
-      <h2>{{chat.name}} <span style="font-weight: lighter;font-size: medium">{{chat.createdAt | date : "hh:mm a dd MM yy"}}</span></h2>
+      <div class="row">
+        <div class="col-11">
+          <h2>{{chat.name}} <span
+            style="font-weight: lighter;font-size: medium">{{chat.createdAt | date : "hh:mm a dd MM yy"}}</span></h2>
+        </div>
+        <div class="col">
+          <button class="btn btn-primary w-100" (click)="makeChatContainerVisible(chat.id)"
+                  id="switch-button-{{chat.id}}" data-toggle="modal" data-target="#profileModal">Join
+          </button>
+        </div>
+      </div>
       <button class="form-control" (click)="deleteChat(chat?.id)">delete</button>
+      <app-chat [chat]="chat" id="chat-container-{{chat.id}}" hidden></app-chat>
+      <app-profile-holder [chatId]="chat.id"></app-profile-holder>
     </div>
   </div>
 </div>
+
+

@@ -1,6 +1,4 @@
 .chats-container{
   width: 50%;
-  max-height: 600px;
-  overflow-y: auto;
-  position: fixed;
+  position: absolute;
 }

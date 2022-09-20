@@ -1,7 +1,9 @@
 package com.example.rabbitmq.api.services;
 
+import com.example.rabbitmq.api.domains.Chat;
 import com.example.rabbitmq.api.domains.Participant;
 import com.example.rabbitmq.api.domains.dto.ParticipantDTO;
+import com.example.rabbitmq.api.ws.ChatWsController;
 import com.example.rabbitmq.api.ws.ParticipantWsController;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +18,7 @@ import org.springframework.web.socket.messaging.AbstractSubProtocolEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import org.springframework.web.socket.messaging.SessionUnsubscribeEvent;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.example.rabbitmq.api.ws.ParticipantWsController.FETCH_PARTICIPANT_JOINED_CHAT_EVENT;
@@ -36,6 +35,8 @@ public class ParticipantService {
     private final SetOperations<String, Participant> setOperations;
 
     private final SimpMessagingTemplate simpMessagingTemplate;
+
+    private final ChatService chatService;
 
     public void handleJoinChat(String sessionId, String participantId, String chatId) {
         log.info(String.format("User %s joining chat", participantId));
@@ -76,9 +77,30 @@ public class ParticipantService {
                 .map(participantMap::remove)
                 .ifPresent(participant -> {
 
+                    String chatId = participant.getChatId();
+
+                    Chat chatIns = chatService.getChats().stream().filter(
+                            chatt -> Objects.equals(chatt.getId(), chatId)
+                    ).findAny().get();
+
                     log.info("Participant leaved the chat. " + participant.getChatId());
 
                     setOperations.remove(ParticipantKeyHelper.makeKey(participant.getChatId()), participant);
+
+                    String key = ParticipantKeyHelper.makeKey(chatId);
+
+                    setOperations.remove(key, participant);
+
+                    Optional
+                            .ofNullable(setOperations.size(key))
+                            .filter(size -> size == 0L)
+                            .ifPresent(chat -> {
+                                chatService.deleteChat(chatId);
+                                simpMessagingTemplate.convertAndSend(
+                                        ChatWsController.FETCH_DELETE_CHAT_EVENT,
+                                        chatService.generateChatDto(chatIns)
+                                );
+                            });
 
                     //отправка сообщения об отключении пользователя
                     simpMessagingTemplate.convertAndSend(

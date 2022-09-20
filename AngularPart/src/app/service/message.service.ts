@@ -3,6 +3,9 @@ import SockJS from "sockjs-client";
 import * as Stomp from 'stompjs';
 import {BehaviorSubject, Observable, Observer} from "rxjs";
 import {HttpClient} from "@angular/common/http";
+import {randomFill} from "crypto";
+import {round} from "@popperjs/core/lib/utils/math";
+import {ParticipantModel} from "../components/participant-creation/models/ParticipantModel";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +16,8 @@ export class MessageService {
 
   availableChats: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 
+  userSession: BehaviorSubject<string> = new BehaviorSubject<string>("");
+
   private static SERVER_URL: string = "http://127.0.0.1:8080/ws";
 
   private socket: any;
@@ -20,6 +25,7 @@ export class MessageService {
 
   constructor(private http: HttpClient) {
     this.connect()
+    this.userSession.next(this.socket.sessionId);
   }
 
   public connect(): void {
@@ -42,7 +48,13 @@ export class MessageService {
   }
 
   private create(): void {
-    this.socket = new SockJS(MessageService.SERVER_URL, {})
+    this.socket = new SockJS(MessageService.SERVER_URL, {}, {
+      sessionId: () => {
+        let sessionId = round(Math.floor(Math.random() * 10000)).toFixed(12).toString().split(".")[0];
+        this.userSession.next(sessionId)
+        return sessionId;
+      }
+    })
     let observable = new Observable((obs: Observer<MessageEvent>) => {
       this.socket.onmessage = obs.next.bind(obs);
       this.socket.onerror = obs.error.bind(obs);
@@ -67,12 +79,22 @@ export class MessageService {
     console.log("Disconnected");
   }
 
+  public sendMessage(message: string, chat_id: string, participantModel: ParticipantModel) {
+    this.stomp.send(`/topic/chat.${chat_id}.messages.all.send`, {'simpSessionId': participantModel.sessionId}, message)
+  }
+
+  public subscribeOnChatMessages(chat_id: string) {
+    this.stomp.subscribe(`/topic/chat.${chat_id}.messages`, (messages:any) => {
+      console.log(messages)
+    });
+  }
+
   public sendCreateChatRequest(chatName: string) {
     this.stomp.send("/topic/chat.create", {}, chatName);
   }
 
   public sendDeleteChatRequest(chatId: string) {
-    this.stomp.send("/topic/chat.delete", {},chatId);
+    this.stomp.send("/topic/chat.delete", {}, chatId);
   }
 
   public subscribeOnChatCreateEvent() {
@@ -84,6 +106,11 @@ export class MessageService {
   public subscribeOnChatDeleteEvent() {
     this.stomp.subscribe("/topic/chat.delete.event", () => {
       this.fillChats();
+    })
+  }
+
+  public joinChat(chatId: string) {
+    this.stomp.subscribe(`/topic/chat.${chatId}.participant.join`, () => {
     })
   }
 

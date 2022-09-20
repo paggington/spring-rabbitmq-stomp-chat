@@ -5,6 +5,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -18,7 +19,8 @@ public class Participant implements Serializable {
     @Builder.Default
     Instant enteredAt = Instant.now();
 
-    String id;
+    @Builder.Default
+    String id = UUID.randomUUID().toString().substring(0,8);
 
     String chatId;
 

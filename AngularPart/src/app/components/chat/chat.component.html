@@ -1,1 +1,13 @@
-<p>chat works!</p>
+<div [hidden]="chatHidden" class="chat-container">
+  <app-chat-messages-view></app-chat-messages-view>
+  <div class="container">
+    <div class="row bottom-0">
+      <div class="col-10">
+        <input type="text" class="form-control" [(ngModel)]="message">
+      </div>
+      <div class="col">
+        <button class="btn btn-primary" (click)="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
