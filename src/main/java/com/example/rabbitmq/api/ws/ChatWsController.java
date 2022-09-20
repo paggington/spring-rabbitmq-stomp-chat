@@ -3,6 +3,7 @@ package com.example.rabbitmq.api.ws;
 import com.example.rabbitmq.api.domains.dto.chat.ChatDTO;
 import com.example.rabbitmq.api.domains.dto.MessageDTO;
 import com.example.rabbitmq.api.services.ChatService;
+import com.example.rabbitmq.api.services.MessageService;
 import com.example.rabbitmq.api.services.ParticipantService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.example.rabbitmq.api.services.MessageService.generateMessageDto;
+import static com.example.rabbitmq.api.services.MessageService.prepareFetchPersonalChatMessagesLink;
 
 @Log4j2
 @Controller
@@ -32,6 +34,8 @@ public class ChatWsController {
     private final ParticipantService participantService;
 
     private final ChatService chatService;
+
+    private final MessageService messageService;
 
     public static final String CREATE_CHAT = "/topic/chat.create";
     public static final String DELETE_CHAT = "/topic/chat.delete";
@@ -79,8 +83,10 @@ public class ChatWsController {
 
     @MessageMapping(SEND_MESSAGE_TO_ALL)
     public void sendMessageToAll(@DestinationVariable("chat_id") String chatId, @Header("simpSessionId") String sessionId, String messageText) {
-        log.info("MESSAGE CAME " + messageText);
-        simpMessagingTemplate.convertAndSend(prepareFetchChatMessagesDestinationLink(chatId), generateMessageDto(messageText, sessionId));
+        //with saving messages
+        messageService.sendMessageToAll(chatId, messageText, sessionId);
+        //without saving messages
+        //simpMessagingTemplate.convertAndSend(prepareFetchChatMessagesDestinationLink(chatId), generateMessageDto(messageText, sessionId));
     }
 
     @MessageMapping(SEND_MESSAGE_TO_PARTICIPANT)
@@ -95,19 +101,5 @@ public class ChatWsController {
         );
     }
 
-    private static String prepareFetchChatMessagesDestinationLink(String chatId) {
-        return FETCH_CHAT_MESSAGES.replace("{chat_id}", chatId);
-    }
 
-    private static String prepareFetchPersonalChatMessagesLink(String chatId, String participantId) {
-        return FETCH_PERSONAL_CHAT_MESSAGES.replace("{chat_id}", chatId).replace("{participant_id}", participantId);
-    }
-
-    private static String prepareSendMessageToAllLink(String chatId) {
-        return SEND_MESSAGE_TO_ALL.replace("{chat_id}", chatId);
-    }
-
-    private static String prepareSendMessageToParticipantLink(String chatId, String participantId) {
-        return SEND_MESSAGE_TO_PARTICIPANT.replace("{chat_id}", chatId).replace("{participant_id}", participantId);
-    }
 }
