@@ -78,7 +78,8 @@ public class ChatWsController {
     }
 
     @MessageMapping(SEND_MESSAGE_TO_ALL)
-    public void sendMessageToAll(String messageText, @DestinationVariable("chat_id") String chatId, @Header("simpSessionId") String sessionId) {
+    public void sendMessageToAll(@DestinationVariable("chat_id") String chatId, @Header("simpSessionId") String sessionId, String messageText) {
+        log.info("MESSAGE CAME " + messageText);
         simpMessagingTemplate.convertAndSend(prepareFetchChatMessagesDestinationLink(chatId), generateMessageDto(messageText, sessionId));
     }
 
