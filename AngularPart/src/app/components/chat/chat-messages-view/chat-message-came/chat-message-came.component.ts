@@ -9,10 +9,13 @@ export class ChatMessageCameComponent implements OnInit {
   @Input()
   message: any;
 
+  imageSpaceVisible: boolean = false;
+
   constructor() {
   }
 
   ngOnInit(): void {
+    this.imageSpaceVisible = this.message.file != "null";
   }
 
 }

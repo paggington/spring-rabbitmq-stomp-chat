@@ -9,6 +9,8 @@ import org.springframework.data.redis.core.SetOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
+
 import static com.example.rabbitmq.api.ws.ChatWsController.*;
 
 @Log4j2
@@ -21,16 +23,17 @@ public class MessageService {
     private final SetOperations<String, MessageDTO> setOperations;
 
 
-    public static MessageDTO generateMessageDto(String messageText, String sessionId) {
+    public static MessageDTO generateMessageDto(String messageText, String sessionId, String file) {
         return MessageDTO.builder()
                 .from(sessionId)
                 .text(messageText)
+                .file(file)
                 .build();
     }
 
     public void sendMessageToAll(String chatId, String messageText, String sessionId) {
         if (!messageText.isEmpty() && !sessionId.isEmpty()) {
-            MessageDTO messageDTO = generateMessageDto(messageText, sessionId);
+            MessageDTO messageDTO = generateMessageDto(messageText, sessionId, null);
             setOperations.add(messageDTO.getId(), messageDTO);
             simpMessagingTemplate.convertAndSend(prepareFetchChatMessagesDestinationLink(chatId), messageDTO);
         }

@@ -1,0 +1,11 @@
+.out-message {
+  background-color: #b6e0f7;
+  border-radius: 15px  15px 0px 15px ;
+  margin-top: 5px;
+  max-width: 400px;
+  float: right;
+  font-weight: 600;
+}
+.out-message-image{
+  border-radius: 15px;
+}

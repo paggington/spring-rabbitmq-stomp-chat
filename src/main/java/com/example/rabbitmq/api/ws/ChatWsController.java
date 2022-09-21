@@ -10,14 +10,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Base64;
 
 import static com.example.rabbitmq.api.services.MessageService.*;
 
@@ -81,11 +86,25 @@ public class ChatWsController {
     }
 
     @MessageMapping(SEND_MESSAGE_TO_ALL)
-    public void sendMessageToAll(@DestinationVariable("chat_id") String chatId, @Header("simpSessionId") String sessionId, String messageText) {
+    public void sendMessageToAll(
+            @DestinationVariable("chat_id") String chatId,
+            @Header("simpSessionId") String sessionId,
+            @Header("file") String imageToSend,
+            String messageText) {
         //with saving messages
 //        messageService.sendMessageToAll(chatId, messageText, sessionId);
         //without saving messages
-        simpMessagingTemplate.convertAndSend(prepareFetchChatMessagesDestinationLink(chatId), generateMessageDto(messageText, sessionId));
+        if (!imageToSend.isEmpty()) {
+            simpMessagingTemplate.convertAndSend(
+                    prepareFetchChatMessagesDestinationLink(chatId),
+                    generateMessageDto(messageText, sessionId, imageToSend)
+            );
+        } else {
+            simpMessagingTemplate.convertAndSend(
+                    prepareFetchChatMessagesDestinationLink(chatId),
+                    generateMessageDto(messageText, sessionId, null)
+            );
+        }
     }
 
     @MessageMapping(SEND_MESSAGE_TO_PARTICIPANT)
@@ -94,9 +113,10 @@ public class ChatWsController {
             @DestinationVariable("chat_id") String chatId,
             @DestinationVariable("participant_id") String participantId,
             @Header("simpSessionId") String sessionId) {
+
         simpMessagingTemplate.convertAndSend(
                 prepareFetchPersonalChatMessagesLink(chatId, participantId),
-                generateMessageDto(messageText, sessionId)
+                generateMessageDto(messageText, sessionId, null)
         );
     }
 }

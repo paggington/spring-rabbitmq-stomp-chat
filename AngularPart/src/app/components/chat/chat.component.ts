@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {MessageService} from "../../service/message.service";
 import {ParticipantModel} from "../participant-creation/models/ParticipantModel";
 import {ProfileService} from "../../service/profile.service";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-chat',
@@ -17,6 +18,12 @@ export class ChatComponent implements OnInit {
   currentUser: ParticipantModel | null = null;
 
   message: string = "";
+
+  file: any = null;
+
+  formControl: FormGroup = new FormGroup({
+    message: new FormControl([''], [Validators.required])
+  })
 
   constructor(private messageService: MessageService, private profileService: ProfileService) {
     if (this.chat && this.chatHidden) {
@@ -37,9 +44,26 @@ export class ChatComponent implements OnInit {
     this.chatHidden = !this.chatHidden;
   }
 
+  uploadFile(file: File) {
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.file = reader.result;
+      };
+    }
+  }
+
   sendMessage() {
     if (this.currentUser) {
-      this.messageService.sendMessage(this.message, this.chat.id, this.currentUser);
+      if(this.messageContent){
+        this.messageService.sendMessage(this.messageContent, this.chat.id, this.currentUser, this.file);
+        // @ts-ignore
+        document.getElementById(`image-file-content-${this.chat.id}`)?.textContent = null;
+      }
     }
+  }
+  get messageContent() {
+    return this.formControl.get('message')?.value;
   }
 }

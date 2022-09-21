@@ -86,8 +86,12 @@ export class MessageService {
     console.log("Disconnected");
   }
 
-  public sendMessage(message: string, chat_id: string, participantModel: ParticipantModel) {
-    this.stomp.send(`/topic/chat.${chat_id}.messages.all.send`, {'simpSessionId': participantModel.sessionId}, message)
+  public sendMessage(message: string, chat_id: string, participantModel: ParticipantModel, file: any) {
+    console.log(file)
+    this.stomp.send(`/topic/chat.${chat_id}.messages.all.send`, {
+      'simpSessionId': participantModel.sessionId,
+      'file': file
+    }, message)
   }
 
   public subscribeOnChatMessages(chat_id: string) {

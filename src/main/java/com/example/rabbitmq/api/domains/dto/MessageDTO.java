@@ -5,6 +5,8 @@ import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Base64;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -19,7 +21,9 @@ public class MessageDTO implements Serializable {
     String from;
 
     String text;
+    //yep yep i gonna save incoming file in plain string...
+    String file;
 
     @Builder.Default
-    Instant createdAt = Instant.now();
+    Long createdAt = new Date(System.currentTimeMillis()).getTime();
 }

@@ -9,11 +9,11 @@ import {HttpClientModule} from "@angular/common/http";
 import {ChatListComponent} from './components/chat/chat-list/chat-list.component';
 import {ChatCreateComponent} from './components/chat/chat-create/chat-create.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {FormsModule} from "@angular/forms";
-import { ProfileHolderComponent } from './components/profile-holder/profile-holder.component';
-import { ChatMessagesViewComponent } from './components/chat/chat-messages-view/chat-messages-view.component';
-import { ChatMessageCameComponent } from './components/chat/chat-messages-view/chat-message-came/chat-message-came.component';
-import { ChatMessageOutComponent } from './components/chat/chat-messages-view/chat-message-out/chat-message-out.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ProfileHolderComponent} from './components/profile-holder/profile-holder.component';
+import {ChatMessagesViewComponent} from './components/chat/chat-messages-view/chat-messages-view.component';
+import {ChatMessageCameComponent} from './components/chat/chat-messages-view/chat-message-came/chat-message-came.component';
+import {ChatMessageOutComponent} from './components/chat/chat-messages-view/chat-message-out/chat-message-out.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,8 @@ import { ChatMessageOutComponent } from './components/chat/chat-messages-view/ch
     BrowserModule,
     HttpClientModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

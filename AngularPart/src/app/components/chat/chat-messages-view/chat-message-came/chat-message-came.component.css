@@ -1,7 +1,12 @@
 .came-message {
   background-color: #7ab0cb;
-  border-radius: 15px;
+  border-radius: 0px 15px 15px 15px;
   margin-top: 5px;
   max-width: 400px;
   float: left;
+  font-weight: 600;
+}
+
+.out-message-image {
+  border-radius: 15px;
 }
