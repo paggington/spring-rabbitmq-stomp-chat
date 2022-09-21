@@ -44,7 +44,7 @@ public class MessageService {
         return SEND_MESSAGE_TO_PARTICIPANT.replace("{chat_id}", chatId).replace("{participant_id}", participantId);
     }
 
-    private static String prepareFetchChatMessagesDestinationLink(String chatId) {
+    public static String prepareFetchChatMessagesDestinationLink(String chatId) {
         return FETCH_CHAT_MESSAGES.replace("{chat_id}", chatId);
     }
 

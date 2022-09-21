@@ -18,18 +18,24 @@ export class MessageService {
 
   userSession: BehaviorSubject<string> = new BehaviorSubject<string>("");
 
+  cameMessage: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+
   private static SERVER_URL: string = "http://127.0.0.1:8080/ws";
 
   private socket: any;
   private stomp: any;
 
   constructor(private http: HttpClient) {
-    this.connect()
-    this.userSession.next(this.socket.sessionId);
+    // HAHAHAHAH dude actually said "Hey lets call it multiple times lets see wats gonna be" he's committed suicide next day
+    // in cause of two user sessions for one tab
+    // this.connect()
   }
 
   public connect(): void {
     this.create();
+    if (this.socket.sessionId) {
+      this.userSession.next(this.socket.sessionId);
+    }
     if (this.socket.status !== SockJS.OPEN) {
       this.stomp = Stomp.over(this.socket);
       const _this = this;
@@ -51,6 +57,7 @@ export class MessageService {
     this.socket = new SockJS(MessageService.SERVER_URL, {}, {
       sessionId: () => {
         let sessionId = round(Math.floor(Math.random() * 10000)).toFixed(12).toString().split(".")[0];
+        console.log('SESSION UD', sessionId)
         this.userSession.next(sessionId)
         return sessionId;
       }
@@ -84,8 +91,10 @@ export class MessageService {
   }
 
   public subscribeOnChatMessages(chat_id: string) {
-    this.stomp.subscribe(`/topic/chat.${chat_id}.messages`, (messages:any) => {
-      console.log(messages)
+    this.stomp.subscribe(`/topic/chat.${chat_id}.messages`, (message: any) => {
+      if (message != null) {
+        this.cameMessage.next(message);
+      }
     });
   }
 

@@ -1,4 +1,4 @@
-package com.example.rabbitmq.RedisConfig;
+package com.example.rabbitmq.config.RedisConfig;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;

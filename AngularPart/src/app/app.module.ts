@@ -12,6 +12,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from "@angular/forms";
 import { ProfileHolderComponent } from './components/profile-holder/profile-holder.component';
 import { ChatMessagesViewComponent } from './components/chat/chat-messages-view/chat-messages-view.component';
+import { ChatMessageCameComponent } from './components/chat/chat-messages-view/chat-message-came/chat-message-came.component';
+import { ChatMessageOutComponent } from './components/chat/chat-messages-view/chat-message-out/chat-message-out.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { ChatMessagesViewComponent } from './components/chat/chat-messages-view/
     ChatListComponent,
     ChatCreateComponent,
     ProfileHolderComponent,
-    ChatMessagesViewComponent
+    ChatMessagesViewComponent,
+    ChatMessageCameComponent,
+    ChatMessageOutComponent
   ],
   imports: [
     BrowserModule,

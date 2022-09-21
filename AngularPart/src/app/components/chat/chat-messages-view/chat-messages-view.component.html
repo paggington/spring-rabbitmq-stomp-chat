@@ -1,3 +1,6 @@
-<div class="container w-100 h-100">
-
+<div class="container w-100 h-100 overflow-auto">
+  <div *ngFor="let message of messages">
+    <app-chat-message-came *ngIf="message.from != currentUser!.sessionId" [message]="message"></app-chat-message-came>
+    <app-chat-message-out *ngIf="message.from == currentUser!.sessionId" [message]="message"></app-chat-message-out>
+  </div>
 </div>

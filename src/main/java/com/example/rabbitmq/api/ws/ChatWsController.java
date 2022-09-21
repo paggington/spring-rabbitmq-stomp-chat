@@ -19,8 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.example.rabbitmq.api.services.MessageService.generateMessageDto;
-import static com.example.rabbitmq.api.services.MessageService.prepareFetchPersonalChatMessagesLink;
+import static com.example.rabbitmq.api.services.MessageService.*;
 
 @Log4j2
 @Controller
@@ -84,9 +83,9 @@ public class ChatWsController {
     @MessageMapping(SEND_MESSAGE_TO_ALL)
     public void sendMessageToAll(@DestinationVariable("chat_id") String chatId, @Header("simpSessionId") String sessionId, String messageText) {
         //with saving messages
-        messageService.sendMessageToAll(chatId, messageText, sessionId);
+//        messageService.sendMessageToAll(chatId, messageText, sessionId);
         //without saving messages
-        //simpMessagingTemplate.convertAndSend(prepareFetchChatMessagesDestinationLink(chatId), generateMessageDto(messageText, sessionId));
+        simpMessagingTemplate.convertAndSend(prepareFetchChatMessagesDestinationLink(chatId), generateMessageDto(messageText, sessionId));
     }
 
     @MessageMapping(SEND_MESSAGE_TO_PARTICIPANT)
@@ -100,6 +99,4 @@ public class ChatWsController {
                 generateMessageDto(messageText, sessionId)
         );
     }
-
-
 }

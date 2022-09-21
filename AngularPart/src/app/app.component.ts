@@ -18,9 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public setProfileServiceUser(user: any) {
-    console.log('USJDNKJSNDJK',user)
     if (user) {
-      console.log('USER')
       this.profileService.currentProfile.next(user);
     }
   }

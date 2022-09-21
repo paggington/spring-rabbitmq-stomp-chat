@@ -1,4 +1,4 @@
-package com.example.rabbitmq.RabbitConfig;
+package com.example.rabbitmq.config.RabbitConfig;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

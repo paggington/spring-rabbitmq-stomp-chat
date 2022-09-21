@@ -14,6 +14,8 @@ export class ChatMessagesViewComponent implements OnInit {
 
   currentUser: ParticipantModel | null = null;
 
+  messages: any[] = [];
+
   constructor(private messageService: MessageService, private profileService: ProfileService) {
     this.profileService.currentProfile.asObservable().subscribe((profile) => {
       this.currentUser = profile;
@@ -21,7 +23,12 @@ export class ChatMessagesViewComponent implements OnInit {
         this.messageService.subscribeOnChatMessages(this.currentUser.chatId)
       }
     })
-
+    this.messageService.cameMessage.asObservable().subscribe((message) => {
+      console.log(message)
+      if (message) {
+        this.messages.push(JSON.parse(message.body));
+      }
+    })
   }
 
   ngOnInit(): void {
