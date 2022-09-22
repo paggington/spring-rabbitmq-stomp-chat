@@ -25,7 +25,23 @@ export class ProfileHolderComponent implements OnInit {
   }
 
   emitProfileCreation(model: ParticipantModel) {
-    this.profileService.setProfile(model);
-    this.profileCreationEmitter.emit(model);
+    if (model.nickname) {
+      this.profileService.setProfile(model);
+      if (this.profileService.currentProfile.value) {
+        this.makeChatContainerVisible();
+      }
+    }
+  }
+
+  makeChatContainerVisible() {
+    let currentChatContainer = document.getElementById(`chat-container-${this.chatId}`);
+    let currentChatSwitchButton = document.getElementById(`switch-button-${this.chatId}`);
+    if (currentChatContainer?.hasAttribute('hidden')) {
+      currentChatSwitchButton!.textContent = 'Exit'
+      currentChatContainer?.removeAttribute('hidden');
+    } else {
+      currentChatSwitchButton!.textContent = 'Join'
+      currentChatContainer?.setAttribute('hidden', '');
+    }
   }
 }

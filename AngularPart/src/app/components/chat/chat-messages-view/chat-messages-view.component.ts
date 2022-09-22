@@ -16,6 +16,8 @@ export class ChatMessagesViewComponent implements OnInit {
 
   messages: any[] = [];
 
+  previousMessage:any;
+
   constructor(private messageService: MessageService, private profileService: ProfileService) {
     this.profileService.currentProfile.asObservable().subscribe((profile) => {
       this.currentUser = profile;
@@ -24,9 +26,11 @@ export class ChatMessagesViewComponent implements OnInit {
       }
     })
     this.messageService.cameMessage.asObservable().subscribe((message) => {
-      console.log(message)
-      if (message) {
-        this.messages.push(JSON.parse(message.body));
+      if(this.previousMessage != message){
+        if (message) {
+          this.messages.push(JSON.parse(message.body));
+        }
+        this.previousMessage = message;
       }
     })
   }

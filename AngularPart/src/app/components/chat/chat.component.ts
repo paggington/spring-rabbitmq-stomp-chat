@@ -56,13 +56,18 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if (this.currentUser) {
-      if(this.messageContent){
+      if (this.messageContent) {
         this.messageService.sendMessage(this.messageContent, this.chat.id, this.currentUser, this.file);
         // @ts-ignore
         document.getElementById(`image-file-content-${this.chat.id}`)?.textContent = null;
       }
     }
   }
+
+  triggerInput() {
+    document.getElementById(`image-file-content-${this.chat.id}`)?.click();
+  }
+
   get messageContent() {
     return this.formControl.get('message')?.value;
   }

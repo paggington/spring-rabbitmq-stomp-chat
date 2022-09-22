@@ -1,5 +1,9 @@
-<div class="container-sm out-message" *ngIf="message">
-  <p>{{message.text}}</p>
-  <img [src]="message!.file" class="img-fluid out-message-image" *ngIf="imageSpaceVisible">
-  <p class="font-monospace float-end" style="font-weight:500">{{message.createdAt | date : 'hh:mm dd.MM'}}</p>
+<div class="row h-75">
+  <div class="col">
+    <div class="container-sm out-message" *ngIf="message">
+      <p>{{message.text}}</p>
+      <img [src]="message!.file" class="img-fluid out-message-image" *ngIf="imageSpaceVisible">
+      <p class="font-monospace float-end" style="font-weight:500">{{message.createdAt | date : 'hh:mm dd.MM'}}</p>
+    </div>
+  </div>
 </div>

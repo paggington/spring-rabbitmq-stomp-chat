@@ -6,11 +6,13 @@
     <div class="col-9">
       <input type="text" class="form-control" formControlName="message">
     </div>
-    <div class="col">
-      <input type="file" id="image-file-content-{{chat.id}}" (change)="uploadFile($any($event.target).files[0])">
-    </div>
-    <div class="col">
+    <div class="col-sm">
       <button class="btn btn-primary" (click)="sendMessage()">Send</button>
+    </div>
+    <div class="col-sm">
+      <button class="btn btn-primary" (click)="triggerInput()">Add</button>
     </div>
   </div>
 </form>
+<input type="file" id="image-file-content-{{chat.id}}" (change)="uploadFile($any($event.target).files[0])"
+       hidden>

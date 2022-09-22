@@ -3,7 +3,6 @@ import SockJS from "sockjs-client";
 import * as Stomp from 'stompjs';
 import {BehaviorSubject, Observable, Observer} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import {randomFill} from "crypto";
 import {round} from "@popperjs/core/lib/utils/math";
 import {ParticipantModel} from "../components/participant-creation/models/ParticipantModel";
 
@@ -57,7 +56,6 @@ export class MessageService {
     this.socket = new SockJS(MessageService.SERVER_URL, {}, {
       sessionId: () => {
         let sessionId = round(Math.floor(Math.random() * 10000)).toFixed(12).toString().split(".")[0];
-        console.log('SESSION UD', sessionId)
         this.userSession.next(sessionId)
         return sessionId;
       }
@@ -83,11 +81,9 @@ export class MessageService {
     if (this.stomp !== null) {
       this.stomp.disconnect();
     }
-    console.log("Disconnected");
   }
 
   public sendMessage(message: string, chat_id: string, participantModel: ParticipantModel, file: any) {
-    console.log(file)
     this.stomp.send(`/topic/chat.${chat_id}.messages.all.send`, {
       'simpSessionId': participantModel.sessionId,
       'file': file
@@ -107,7 +103,9 @@ export class MessageService {
   }
 
   public sendDeleteChatRequest(chatId: string) {
-    this.stomp.send("/topic/chat.delete", {}, chatId);
+    this.stomp.send("/topic/chat.delete", {}, chatId).then(() => {
+      this.stomp.unsubscribe();
+    });
   }
 
   public subscribeOnChatCreateEvent() {

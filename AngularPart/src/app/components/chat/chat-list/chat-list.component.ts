@@ -28,17 +28,5 @@ export class ChatListComponent implements OnInit {
   deleteChat(chatId: string) {
     this.messageService.sendDeleteChatRequest(chatId);
   }
-
-  makeChatContainerVisible(chatId: string) {
-    let currentChatContainer = document.getElementById(`chat-container-${chatId}`);
-    let currentChatSwitchButton = document.getElementById(`switch-button-${chatId}`);
-    if (currentChatContainer?.hasAttribute('hidden')) {
-      currentChatSwitchButton!.textContent = 'Exit'
-      currentChatContainer?.removeAttribute('hidden');
-    } else {
-      currentChatSwitchButton!.textContent = 'Join'
-      currentChatContainer?.setAttribute('hidden', '');
-    }
-  }
 }
 
