@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Base64;
+import java.util.*;
 
 import static com.example.rabbitmq.api.services.MessageService.*;
 
@@ -49,6 +50,9 @@ public class ChatWsController {
     public static final String SEND_MESSAGE_TO_PARTICIPANT = "/topic/chat.{chat_id}.messages.participant.{participant_id}.send";
     public static final String FETCH_CHAT_MESSAGES = "/topic/chat.{chat_id}.messages";
     public static final String FETCH_PERSONAL_CHAT_MESSAGES = "/topic/chat.{chat_id}.participants.{participant_id}.messages";
+
+    public static final String FETCH_PAGE_CHAT_MESSAGES_REQUEST = "/topic/chat.{chat_id}.messages.{page}";
+    public static final String FETCH_CHAT_MESSAGES_HISTORY = "/topic/chat.{chat_id}.messages.history";
 
     @MessageMapping(CREATE_CHAT)
     public void createChat(String chatName) {
@@ -91,20 +95,7 @@ public class ChatWsController {
             @Header("simpSessionId") String sessionId,
             @Header("file") String imageToSend,
             String messageText) {
-        //with saving messages
-//        messageService.sendMessageToAll(chatId, messageText, sessionId);
-        //without saving messages
-        if (!imageToSend.isEmpty()) {
-            simpMessagingTemplate.convertAndSend(
-                    prepareFetchChatMessagesDestinationLink(chatId),
-                    generateMessageDto(messageText, sessionId, imageToSend)
-            );
-        } else {
-            simpMessagingTemplate.convertAndSend(
-                    prepareFetchChatMessagesDestinationLink(chatId),
-                    generateMessageDto(messageText, sessionId, null)
-            );
-        }
+        messageService.sendMessageToAll(chatId, messageText, sessionId, imageToSend);
     }
 
     @MessageMapping(SEND_MESSAGE_TO_PARTICIPANT)
@@ -116,7 +107,19 @@ public class ChatWsController {
 
         simpMessagingTemplate.convertAndSend(
                 prepareFetchPersonalChatMessagesLink(chatId, participantId),
-                generateMessageDto(messageText, sessionId, null)
+                Objects.requireNonNull(new HashMap<>().put(generateMessageDto(messageText, sessionId, chatId), null))
         );
+    }
+
+    @MessageMapping(FETCH_PAGE_CHAT_MESSAGES_REQUEST)
+    public void sendFetchRequestPagedChatMessages(
+            @DestinationVariable("chat_id") String chatId,
+            @DestinationVariable("page") int page) {
+        messageService.fetchMessagesPageForChat(chatId, page);
+    }
+
+    @SubscribeMapping(FETCH_CHAT_MESSAGES_HISTORY)
+    public Page<MessageDTO> fetchPagedChatMessages() {
+        return null;
     }
 }

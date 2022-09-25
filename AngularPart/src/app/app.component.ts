@@ -24,6 +24,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    alert('MAKE IMAGES LOADING FOR MESSAGE + MULTIPLE MESSAGES')
     this.messageService.connect();
   }
 

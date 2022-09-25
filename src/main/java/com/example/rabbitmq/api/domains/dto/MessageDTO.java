@@ -2,27 +2,40 @@ package com.example.rabbitmq.api.domains.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.Serializable;
-import java.time.Instant;
-import java.util.Base64;
 import java.util.Date;
-import java.util.UUID;
 
 @Data
+@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MessageDTO implements Serializable {
-    @Builder.Default
-    String id = UUID.randomUUID().toString().substring(0, 9);
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    String id;
 
-    String from;
+    String sentFrom;
 
     String text;
-    //yep yep i gonna save incoming file in plain string...
-    String file;
+
+    String chatId;
+
+    @Builder.Default
+    Boolean haveByteContent = false;
 
     @Builder.Default
     Long createdAt = new Date(System.currentTimeMillis()).getTime();

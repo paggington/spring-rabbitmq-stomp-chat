@@ -26,11 +26,7 @@ export class MessageService {
 
   public subscribedOnChat: boolean = false;
 
-  constructor(private http: HttpClient) {
-    // HAHAHAHAH dude actually said "Hey lets call it multiple times lets see wats gonna be" he's committed suicide next day
-    // in cause of two user sessions for one tab
-    // this.connect()
-  }
+  constructor(private http: HttpClient) {}
 
   public connect(): void {
     this.create();

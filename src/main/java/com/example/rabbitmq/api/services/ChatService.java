@@ -12,6 +12,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.example.rabbitmq.api.ws.ChatWsController.FETCH_CREATE_CHAT_EVENT;
 import static com.example.rabbitmq.api.ws.ChatWsController.FETCH_DELETE_CHAT_EVENT;
