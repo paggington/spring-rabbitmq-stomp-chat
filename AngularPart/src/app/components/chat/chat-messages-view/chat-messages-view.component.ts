@@ -16,22 +16,17 @@ export class ChatMessagesViewComponent implements OnInit {
 
   messages: any[] = [];
 
-  previousMessage:any;
+  previousMessage: any;
 
   constructor(private messageService: MessageService, private profileService: ProfileService) {
     this.profileService.currentProfile.asObservable().subscribe((profile) => {
       this.currentUser = profile;
-      if (this.currentUser && this.currentUser.chatId) {
+      if (!this.messageService.subscribedOnChat && this.currentUser.chatId) {
         this.messageService.subscribeOnChatMessages(this.currentUser.chatId)
       }
     })
     this.messageService.cameMessage.asObservable().subscribe((message) => {
-      if(this.previousMessage != message){
-        if (message) {
-          this.messages.push(JSON.parse(message.body));
-        }
-        this.previousMessage = message;
-      }
+      this.messages.push(JSON.parse(message.body));
     })
   }
 

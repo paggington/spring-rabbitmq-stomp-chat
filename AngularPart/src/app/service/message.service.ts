@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import SockJS from "sockjs-client";
 import * as Stomp from 'stompjs';
-import {BehaviorSubject, Observable, Observer} from "rxjs";
+import {BehaviorSubject, Observable, Observer, Subject} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {round} from "@popperjs/core/lib/utils/math";
 import {ParticipantModel} from "../components/participant-creation/models/ParticipantModel";
@@ -13,16 +13,18 @@ export class MessageService {
 
   serverActive: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  availableChats: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  availableChats: Subject<any[]> = new Subject<any[]>();
 
   userSession: BehaviorSubject<string> = new BehaviorSubject<string>("");
 
-  cameMessage: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  cameMessage: Subject<any> = new Subject<any>();
 
   private static SERVER_URL: string = "http://127.0.0.1:8080/ws";
 
   private socket: any;
-  private stomp: any;
+  public stomp: any;
+
+  public subscribedOnChat: boolean = false;
 
   constructor(private http: HttpClient) {
     // HAHAHAHAH dude actually said "Hey lets call it multiple times lets see wats gonna be" he's committed suicide next day
@@ -56,6 +58,7 @@ export class MessageService {
     this.socket = new SockJS(MessageService.SERVER_URL, {}, {
       sessionId: () => {
         let sessionId = round(Math.floor(Math.random() * 10000)).toFixed(12).toString().split(".")[0];
+        console.log('sessionId',sessionId)
         this.userSession.next(sessionId)
         return sessionId;
       }
@@ -91,6 +94,7 @@ export class MessageService {
   }
 
   public subscribeOnChatMessages(chat_id: string) {
+    this.subscribedOnChat = true;
     this.stomp.subscribe(`/topic/chat.${chat_id}.messages`, (message: any) => {
       if (message != null) {
         this.cameMessage.next(message);

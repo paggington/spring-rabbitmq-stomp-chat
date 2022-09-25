@@ -25,9 +25,10 @@ export class ProfileHolderComponent implements OnInit {
   }
 
   emitProfileCreation(model: ParticipantModel) {
+    console.log('EMIT MODEL',model)
     if (model.nickname) {
       this.profileService.setProfile(model);
-      if (this.profileService.currentProfile.value) {
+      if (this.profileService.currentProfile) {
         this.makeChatContainerVisible();
       }
     }
@@ -38,10 +39,16 @@ export class ProfileHolderComponent implements OnInit {
     let currentChatSwitchButton = document.getElementById(`switch-button-${this.chatId}`);
     if (currentChatContainer?.hasAttribute('hidden')) {
       currentChatSwitchButton!.textContent = 'Exit'
+
+      currentChatContainer?.removeAttribute('data-toggle')
+      currentChatContainer?.removeAttribute('data-target')
       currentChatContainer?.removeAttribute('hidden');
     } else {
       currentChatSwitchButton!.textContent = 'Join'
+
       currentChatContainer?.setAttribute('hidden', '');
+      currentChatContainer?.setAttribute('data-toggle', 'modal')
+      currentChatContainer?.setAttribute('data-target', '#profileModal')
     }
   }
 }

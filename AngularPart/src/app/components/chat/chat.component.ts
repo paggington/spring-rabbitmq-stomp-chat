@@ -1,15 +1,16 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {MessageService} from "../../service/message.service";
 import {ParticipantModel} from "../participant-creation/models/ParticipantModel";
 import {ProfileService} from "../../service/profile.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
+// @ts-ignore
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
   @Input()
   chat: any;
 
@@ -29,11 +30,15 @@ export class ChatComponent implements OnInit {
     if (this.chat && this.chatHidden) {
       messageService.joinChat(this.chat.id);
     }
-    if (this.profileService.currentProfile.value) {
+    if (this.profileService.currentProfile) {
       this.profileService.currentProfile.asObservable().subscribe((profile) => {
         this.currentUser = profile;
       })
     }
+  }
+
+  ngOnDestroy(): void {
+    this.profileService.currentProfile.unsubscribe();
   }
 
   ngOnInit(): void {

@@ -1,5 +1,5 @@
 export interface ParticipantModel {
-  sessionId: string | undefined,
+  sessionId: any | undefined,
   id: string | undefined,
   chatId: string | undefined,
   nickname: string | undefined,
