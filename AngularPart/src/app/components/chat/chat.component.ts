@@ -57,6 +57,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.file = reader.result;
       };
     }
+    console.log('this file',this.file)
   }
 
   sendMessage() {

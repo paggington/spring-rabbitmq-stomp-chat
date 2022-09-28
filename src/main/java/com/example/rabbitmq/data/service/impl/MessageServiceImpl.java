@@ -28,4 +28,9 @@ public class MessageServiceImpl implements MessageService {
     public MessageDTO saveMessage(MessageDTO messageDTO) {
         return messageRepository.save(messageDTO);
     }
+
+    @Override
+    public MessageDTO getMessageById(String id) {
+        return messageRepository.findById(id).get();
+    }
 }

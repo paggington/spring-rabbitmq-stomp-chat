@@ -17,7 +17,6 @@ export class ProfileService {
   }
 
   public setProfile(userModel:ParticipantModel){
-    console.log('USER MODEL',userModel)
     this.currentProfile.next(userModel);
   }
 }

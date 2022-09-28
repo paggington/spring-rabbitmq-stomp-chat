@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import static com.example.rabbitmq.api.ws.ChatWsController.*;
 import static java.lang.String.format;
+import static java.util.Objects.isNull;
 
 @Log4j2
 @Service
@@ -54,10 +55,12 @@ public class MessageService {
 
             messageServiceImpl.saveMessage(messageDTO);
 
-            if (!Objects.isNull(file) && !file.isEmpty() && !IMAGE_NULL_BASE64.equals(file)) {
+            if (!isNull(file) && !file.isEmpty() && !IMAGE_NULL_BASE64.equals(file)) {
                 imageSet.put(IMAGES_DIR_SEQ, messageDTO.getId(), file);
                 messageDTO.setHaveByteContent(true);
-            }
+            }MessageDTO messageDTO1 = messageServiceImpl.getMessageById(messageDTO.getId());
+
+            messageServiceImpl.saveMessage(messageDTO);
 
             setOperations.put(prepareSaveChatMessagesClusterName(chatId), messageDTO.getId(), messageDTO);
 

@@ -54,7 +54,6 @@ export class MessageService {
     this.socket = new SockJS(MessageService.SERVER_URL, {}, {
       sessionId: () => {
         let sessionId = round(Math.floor(Math.random() * 10000)).toFixed(12).toString().split(".")[0];
-        console.log('sessionId',sessionId)
         this.userSession.next(sessionId)
         return sessionId;
       }

@@ -8,4 +8,6 @@ public interface MessageService {
     Page<MessageDTO> fetchMessagesForChat(String chatId, int offset);
 
     MessageDTO saveMessage(MessageDTO messageDTO);
+
+    MessageDTO getMessageById(String id);
 }

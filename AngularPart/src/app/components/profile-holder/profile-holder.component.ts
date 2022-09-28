@@ -25,7 +25,6 @@ export class ProfileHolderComponent implements OnInit {
   }
 
   emitProfileCreation(model: ParticipantModel) {
-    console.log('EMIT MODEL',model)
     if (model.nickname) {
       this.profileService.setProfile(model);
       if (this.profileService.currentProfile) {
