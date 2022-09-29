@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import SockJS from "sockjs-client";
 import * as Stomp from 'stompjs';
 import {BehaviorSubject, Observable, Observer, Subject} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpEvent, HttpParams} from "@angular/common/http";
 import {round} from "@popperjs/core/lib/utils/math";
 import {ParticipantModel} from "../components/participant-creation/models/ParticipantModel";
 
@@ -20,13 +20,15 @@ export class MessageService {
   cameMessage: Subject<any> = new Subject<any>();
 
   private static SERVER_URL: string = "http://127.0.0.1:8080/ws";
+  private static API_SERVER_URL: string = "http://127.0.0.1:8080";
 
   private socket: any;
   public stomp: any;
 
   public subscribedOnChat: boolean = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   public connect(): void {
     this.create();
@@ -132,5 +134,14 @@ export class MessageService {
 
   public fetchActiveChats(): Observable<any> {
     return this.http.get<any>('http://localhost:8080/api/chats', {});
+  }
+
+  public fetchMessageByteContent(messageId: string): Observable<HttpEvent<any>> {
+    return this.http.get(`${MessageService.API_SERVER_URL}/api/v1/messages/fetch`, {
+      reportProgress: true,
+      observe: 'events',
+      responseType: 'json',
+      params: new HttpParams().append('messageId', messageId)
+    })
   }
 }

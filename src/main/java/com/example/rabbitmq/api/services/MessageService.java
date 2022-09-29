@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -58,7 +59,7 @@ public class MessageService {
             if (!isNull(file) && !file.isEmpty() && !IMAGE_NULL_BASE64.equals(file)) {
                 imageSet.put(IMAGES_DIR_SEQ, messageDTO.getId(), file);
                 messageDTO.setHaveByteContent(true);
-            }MessageDTO messageDTO1 = messageServiceImpl.getMessageById(messageDTO.getId());
+            }
 
             messageServiceImpl.saveMessage(messageDTO);
 
@@ -66,6 +67,14 @@ public class MessageService {
 
             simpMessagingTemplate.convertAndSend(prepareFetchChatMessagesDestinationLink(chatId), messageDTO);
         }
+    }
+
+    public String fetchMessageContent(String messageId) {
+        String messageContentByte64 = imageSet.get(IMAGES_DIR_SEQ,messageId);
+        if(isNull(messageContentByte64) || messageContentByte64.isEmpty()){
+            return null;
+        }
+        return messageContentByte64;
     }
 
     public void fetchMessagesPageForChat(String chatId, int page) {
