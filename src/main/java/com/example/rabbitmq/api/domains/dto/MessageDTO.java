@@ -3,14 +3,13 @@ package com.example.rabbitmq.api.domains.dto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import reactor.util.function.Tuple2;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -33,6 +32,9 @@ public class MessageDTO implements Serializable {
     String text;
 
     String chatId;
+
+    @ElementCollection
+    private Set<Tuple2<String,String>> byteContentNames = new HashSet<>();
 
     @Builder.Default
     Boolean haveByteContent = false;
