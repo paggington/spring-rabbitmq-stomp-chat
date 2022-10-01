@@ -1,4 +1,4 @@
-package com.example.rabbitmq.api.services;
+package com.example.rabbitmq.data.services;
 
 import com.example.rabbitmq.api.domains.dto.MessageDTO;
 import com.example.rabbitmq.data.service.impl.MessageServiceImpl;

@@ -1,13 +1,10 @@
 package com.example.rabbitmq.api.ws;
 
-import com.example.rabbitmq.api.domains.dto.MessageDTO;
 import com.example.rabbitmq.api.domains.dto.ParticipantDTO;
-import com.example.rabbitmq.api.services.ParticipantService;
+import com.example.rabbitmq.data.services.ParticipantService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.web.bind.annotation.RestController;
 

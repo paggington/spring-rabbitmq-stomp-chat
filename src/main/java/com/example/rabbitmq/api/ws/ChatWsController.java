@@ -2,30 +2,26 @@ package com.example.rabbitmq.api.ws;
 
 import com.example.rabbitmq.api.domains.dto.chat.ChatDTO;
 import com.example.rabbitmq.api.domains.dto.MessageDTO;
-import com.example.rabbitmq.api.services.ChatService;
-import com.example.rabbitmq.api.services.MessageService;
-import com.example.rabbitmq.api.services.ParticipantService;
+import com.example.rabbitmq.data.services.ChatService;
+import com.example.rabbitmq.data.services.MessageService;
+import com.example.rabbitmq.data.services.ParticipantService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
-import static com.example.rabbitmq.api.services.MessageService.*;
+import static com.example.rabbitmq.data.services.MessageService.*;
 
 @Log4j2
 @Controller

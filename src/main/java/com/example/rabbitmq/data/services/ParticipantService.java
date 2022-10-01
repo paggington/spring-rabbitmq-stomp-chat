@@ -1,4 +1,4 @@
-package com.example.rabbitmq.api.services;
+package com.example.rabbitmq.data.services;
 
 import com.example.rabbitmq.api.domains.Chat;
 import com.example.rabbitmq.api.domains.Participant;

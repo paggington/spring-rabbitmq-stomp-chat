@@ -1,15 +1,12 @@
 package com.example.rabbitmq.api.ws;
 
 import com.example.rabbitmq.api.domains.dto.MessageDTO;
-import com.example.rabbitmq.api.services.MessageService;
+import com.example.rabbitmq.data.services.MessageService;
 import com.example.rabbitmq.data.service.impl.MessageServiceImpl;
 import com.example.rabbitmq.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.boot.model.relational.Database;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.Message;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import reactor.util.function.Tuple2;

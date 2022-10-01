@@ -1,8 +1,8 @@
 package com.example.rabbitmq.rest;
 
 import com.example.rabbitmq.api.domains.dto.chat.ChatDTO;
-import com.example.rabbitmq.api.services.ChatService;
-import com.example.rabbitmq.api.services.ParticipantService;
+import com.example.rabbitmq.data.services.ChatService;
+import com.example.rabbitmq.data.services.ParticipantService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
