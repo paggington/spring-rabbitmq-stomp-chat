@@ -23,7 +23,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   file: any = null;
 
   formControl: FormGroup = new FormGroup({
-    message: new FormControl([''], [Validators.required])
+    message: new FormControl([''], [Validators.required, Validators.pattern('[\\w\\[\\]`!@#$%\\^&*()={}:;<>+\'-]*')])
   })
 
   constructor(private messageService: MessageService, private profileService: ProfileService) {
@@ -57,15 +57,15 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.file = reader.result;
       };
     }
-    console.log('this file',this.file)
   }
 
   sendMessage() {
     if (this.currentUser) {
-      if (this.messageContent) {
+      if (this.messageContent && this.formControl.status === "VALID") {
         this.messageService.sendMessage(this.messageContent, this.chat.id, this.currentUser, this.file);
-        // @ts-ignore
-        document.getElementById(`image-file-content-${this.chat.id}`)?.textContent = null;
+
+        this.file = null;
+        this.formControl.get('message')?.setValue(null)
       }
     }
   }
