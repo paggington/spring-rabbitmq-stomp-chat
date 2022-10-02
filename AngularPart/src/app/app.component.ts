@@ -3,6 +3,7 @@ import {MessageService} from "./service/message.service";
 import {ProfileService} from "./service/profile.service";
 import {ParticipantModel} from "./components/participant-creation/models/ParticipantModel";
 import {migrateEntryComponentsUsages} from "@angular/core/schematics/migrations/entry-components/util";
+import {environment} from "../environments/environment.prod";
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,8 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'AngularPart';
 
   userHaveProfile: boolean = true;
+
+  inRelease:boolean = environment.released;
 
   constructor(private messageService: MessageService, private profileService: ProfileService) {
   }

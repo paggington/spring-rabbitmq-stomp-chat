@@ -104,9 +104,7 @@ export class MessageService {
   }
 
   public sendDeleteChatRequest(chatId: string) {
-    this.stomp.send("/topic/chat.delete", {}, chatId).then(() => {
-      this.stomp.unsubscribe();
-    });
+    this.stomp.send("/topic/chat.delete", {}, chatId)
   }
 
   public subscribeOnChatCreateEvent() {

@@ -10,7 +10,7 @@
       </div>
       <div class="modal-body">
         <div class="container" *ngIf="!userHaveProfile">
-          <app-participant-creation (createSessionProfile)="emitProfileCreation($event)" [chatId]="chatId"></app-participant-creation>
+          <app-participant-creation (createSessionProfile)="emitProfileCreation($event)" [chat]="chat"></app-participant-creation>
         </div>
       </div>
       <div class="modal-footer">
@@ -19,3 +19,4 @@
     </div>
   </div>
 </div>
+<p>{{chat.id}}</p>

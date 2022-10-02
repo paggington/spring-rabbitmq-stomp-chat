@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = {"${angular.server.url}"})
 public class ChatRestController {
 
     private final ChatService chatService;

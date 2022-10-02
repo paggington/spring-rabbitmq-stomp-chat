@@ -4,7 +4,6 @@ import {ParticipantModel} from "../participant-creation/models/ParticipantModel"
 import {ProfileService} from "../../service/profile.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
-// @ts-ignore
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -23,7 +22,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   file: any = null;
 
   formControl: FormGroup = new FormGroup({
-    message: new FormControl([''], [Validators.required, Validators.pattern('[\\w\\[\\]`!@#$%\\^&*()={}:;<>+\'-]*')])
+    message: new FormControl([''], [Validators.required])
   })
 
   constructor(private messageService: MessageService, private profileService: ProfileService) {
@@ -38,11 +37,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.profileService.currentProfile.unsubscribe();
+    this.messageService.subscribedOnChat = false;
   }
 
   ngOnInit(): void {
-
   }
 
   changeHiddenState() {
@@ -61,13 +59,12 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   sendMessage() {
     if (this.currentUser) {
-      if (this.messageContent && this.formControl.status === "VALID") {
+      if (this.messageContent && this.messageContent.trim().length) {
         this.messageService.sendMessage(this.messageContent, this.chat.id, this.currentUser, this.file);
-
-        this.file = null;
-        this.formControl.get('message')?.setValue(null)
       }
     }
+    this.file = null;
+    this.formControl.get('message')?.setValue(null)
   }
 
   triggerInput() {

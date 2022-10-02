@@ -13,9 +13,10 @@
           </button>
         </div>
       </div>
+      <p>{{chat.id}}</p>
       <button class="form-control" (click)="deleteChat(chat?.id)">delete</button>
       <app-chat [chat]="chat" id="chat-container-{{chat.id}}" hidden></app-chat>
-      <app-profile-holder [chatId]="chat.id"></app-profile-holder>
+      <app-profile-holder [chat]="chat"></app-profile-holder>
     </div>
   </div>
 </div>

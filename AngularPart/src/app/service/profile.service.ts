@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Subject} from "rxjs";
+import {Subject} from "rxjs";
 import {ParticipantModel} from "../components/participant-creation/models/ParticipantModel";
-import {MessageService} from "./message.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,14 +8,13 @@ import {MessageService} from "./message.service";
 export class ProfileService {
   currentProfile: Subject<ParticipantModel> = new Subject<ParticipantModel>()
 
-  constructor(private messagingService: MessageService) {
+  constructor() {
   }
 
   public loadUserProfile() {
-
   }
 
-  public setProfile(userModel:ParticipantModel){
+  public setProfile(userModel: ParticipantModel) {
     this.currentProfile.next(userModel);
   }
 }

@@ -10,7 +10,7 @@ import {ParticipantModel} from "../participant-creation/models/ParticipantModel"
 })
 export class ProfileHolderComponent implements OnInit {
   @Input()
-  chatId: string = "";
+  chat: any;
   @Output()
   profileCreationEmitter: EventEmitter<ParticipantModel> = new EventEmitter<ParticipantModel>();
   userHaveProfile: boolean = false;
@@ -28,14 +28,16 @@ export class ProfileHolderComponent implements OnInit {
     if (model.nickname) {
       this.profileService.setProfile(model);
       if (this.profileService.currentProfile) {
-        this.makeChatContainerVisible();
+        if (this.chat) {
+          this.makeChatContainerVisible();
+        }
       }
     }
   }
 
   makeChatContainerVisible() {
-    let currentChatContainer = document.getElementById(`chat-container-${this.chatId}`);
-    let currentChatSwitchButton = document.getElementById(`switch-button-${this.chatId}`);
+    let currentChatContainer = document.getElementById(`chat-container-${this.chat.id}`);
+    let currentChatSwitchButton = document.getElementById(`switch-button-${this.chat.id}`);
     if (currentChatContainer?.hasAttribute('hidden')) {
       currentChatSwitchButton!.textContent = 'Exit'
 

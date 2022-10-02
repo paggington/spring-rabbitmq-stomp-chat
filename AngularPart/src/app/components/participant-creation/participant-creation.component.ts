@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {ParticipantModel} from "./models/ParticipantModel";
 import {MessageService} from "../../service/message.service";
-import {adjustElementAccessExports} from "@angular/compiler-cli/ngcc/src/packages/adjust_cjs_umd_exports";
 
 @Component({
   selector: 'app-participant-creation',
@@ -14,7 +13,7 @@ export class ParticipantCreationComponent implements OnInit, OnDestroy {
 
   nickname: string = "";
   @Input()
-  chatId: string = "";
+  chat: any;
 
   sessionId: any;
 
@@ -33,17 +32,18 @@ export class ParticipantCreationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.messagingService.userSession.unsubscribe()
   }
 
   ngOnInit(): void {
   }
 
   createWithProvidedName() {
-    this.model.chatId = this.chatId;
-    this.model.nickname = this.nickname;
-    if (this.model.nickname && this.model.sessionId != null) {
-      this.createSessionProfile.emit(this.model);
+    if (this.chat) {
+      this.model.chatId = this.chat.id;
+      this.model.nickname = this.nickname;
+      if (this.model.nickname && this.model.sessionId != null) {
+        this.createSessionProfile.emit(this.model);
+      }
     }
   }
 }
