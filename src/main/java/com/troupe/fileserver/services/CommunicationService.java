@@ -7,6 +7,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CommunicationService {
     public static String hello(){
-        return "Hells";
+        return "Hell";
     }
 }
