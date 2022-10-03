@@ -1,8 +1,8 @@
-package com.example.rabbitmq.data.services;
+package com.example.rabbitmq.api.services;
 
-import com.example.rabbitmq.api.domains.Chat;
-import com.example.rabbitmq.api.domains.Participant;
-import com.example.rabbitmq.api.domains.dto.ParticipantDTO;
+import com.troupe.data.data.domains.Chat;
+import com.troupe.data.data.domains.Participant;
+import com.troupe.data.data.domains.dto.ParticipantDTO;
 import com.example.rabbitmq.api.ws.ChatWsController;
 import com.example.rabbitmq.api.ws.ParticipantWsController;
 import lombok.AccessLevel;

@@ -1,10 +1,10 @@
 package com.example.rabbitmq.api.ws;
 
-import com.example.rabbitmq.api.domains.dto.chat.ChatDTO;
-import com.example.rabbitmq.api.domains.dto.MessageDTO;
-import com.example.rabbitmq.data.services.ChatService;
-import com.example.rabbitmq.data.services.MessageService;
-import com.example.rabbitmq.data.services.ParticipantService;
+import com.troupe.data.data.domains.dto.chat.ChatDTO;
+import com.troupe.data.data.domains.dto.MessageDTO;
+import com.example.rabbitmq.api.services.ChatService;
+import com.example.rabbitmq.api.services.MessageService;
+import com.example.rabbitmq.api.services.ParticipantService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,7 +21,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.*;
 
-import static com.example.rabbitmq.data.services.MessageService.*;
+import static com.example.rabbitmq.api.services.MessageService.generateMessageDto;
+import static com.example.rabbitmq.api.services.MessageService.prepareFetchPersonalChatMessagesLink;
 
 @Log4j2
 @Controller

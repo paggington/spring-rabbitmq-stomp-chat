@@ -1,21 +1,18 @@
 package com.example.rabbitmq.api.ws;
 
-import com.example.rabbitmq.api.domains.dto.MessageDTO;
-import com.example.rabbitmq.data.services.MessageService;
-import com.example.rabbitmq.data.service.impl.MessageServiceImpl;
-import com.example.rabbitmq.utils.FileUtils;
+import com.troupe.data.data.domains.dto.MessageDTO;
+import com.example.rabbitmq.api.services.MessageService;
+import com.troupe.data.data.service.impl.MessageServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import reactor.util.function.Tuple2;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Base64;
-import java.util.Set;
 
 import static java.util.Objects.isNull;
 
@@ -54,12 +51,12 @@ public class MessageByteContentController {
         if (!isNull(multipartFile) && !multipartFile.isEmpty()) {
             MessageDTO messageDTO = messageServiceDatabase.getMessageById(messageId);
             if (!isNull(messageDTO)) {
-                Tuple2<String, String> savedFileData = FileUtils.loadFileToDirectory(multipartFile, messageDTO);
-                if (!isNull(savedFileData) && savedFileData.iterator().hasNext()) {
-                    Set<Tuple2<String, String>> messageFileNames = messageDTO.getByteContentNames();
-                    messageFileNames.add(savedFileData);
-                    return ResponseEntity.ok(true);
-                }
+//                Tuple2<String, String> savedFileData = FileUtils.loadFileToDirectory(multipartFile, messageDTO);
+//                if (!isNull(savedFileData) && savedFileData.iterator().hasNext()) {
+//                    Set<Tuple2<String, String>> messageFileNames = messageDTO.getByteContentNames();
+//                    messageFileNames.add(savedFileData);
+//                    return ResponseEntity.ok(true);
+//                }
             }
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
