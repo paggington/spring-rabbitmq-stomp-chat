@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "message.files.directory",
+      "type": "java.lang.String",
+      "description": "Description for directory.",
+      "defaultValue": "C:\\Users\\PAG\\Pictures\\RabbitMqChatDirectory\\MessagesData"
+  }
+] }
