@@ -1,0 +1,3 @@
+[submodule "TroupeData"]
+	path = TroupeData
+	url = https://github.com/paggington/spring-rabbitmq-stomp-chat.git
