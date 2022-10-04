@@ -1,8 +1,7 @@
-package com.example.rabbitmq.api.services;
+package com.example.rabbitmq.data.services;
 
-import com.example.rabbitmq.api.ws.ChatWsController;
-import com.troupe.data.data.domains.Chat;
-import com.troupe.data.data.domains.dto.chat.ChatDTO;
+import com.example.rabbitmq.api.domains.Chat;
+import com.example.rabbitmq.api.domains.dto.chat.ChatDTO;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -15,6 +14,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+
+import static com.example.rabbitmq.api.ws.ChatWsController.FETCH_CREATE_CHAT_EVENT;
+import static com.example.rabbitmq.api.ws.ChatWsController.FETCH_DELETE_CHAT_EVENT;
 
 @Log4j2
 @Service
@@ -35,7 +37,7 @@ public class ChatService {
 
         chatSetOperations.add(KEY, chat);
 
-        simpMessagingTemplate.convertAndSend(ChatWsController.FETCH_CREATE_CHAT_EVENT,
+        simpMessagingTemplate.convertAndSend(FETCH_CREATE_CHAT_EVENT,
                 generateChatDto(chat)
         );
     }
@@ -49,7 +51,7 @@ public class ChatService {
 
                     log.info(String.format("Chat %s has been deleted.", chat.getName()));
 
-                    simpMessagingTemplate.convertAndSend(ChatWsController.FETCH_DELETE_CHAT_EVENT,
+                    simpMessagingTemplate.convertAndSend(FETCH_DELETE_CHAT_EVENT,
                             generateChatDto(chat)
                     );
                 });

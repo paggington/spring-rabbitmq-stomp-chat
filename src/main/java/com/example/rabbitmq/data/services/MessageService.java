@@ -1,17 +1,21 @@
-package com.example.rabbitmq.api.services;
+package com.example.rabbitmq.data.services;
 
-import com.example.rabbitmq.api.ws.ChatWsController;
-import com.troupe.data.data.domains.dto.MessageDTO;
-import com.troupe.data.data.service.impl.MessageServiceImpl;
+import com.example.rabbitmq.api.domains.dto.MessageDTO;
+import com.example.rabbitmq.data.service.impl.MessageServiceImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Objects;
+
+import static com.example.rabbitmq.api.ws.ChatWsController.*;
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
 
@@ -66,8 +70,8 @@ public class MessageService {
     }
 
     public String fetchMessageContent(String messageId) {
-        String messageContentByte64 = imageSet.get(IMAGES_DIR_SEQ, messageId);
-        if (isNull(messageContentByte64) || messageContentByte64.isEmpty()) {
+        String messageContentByte64 = imageSet.get(IMAGES_DIR_SEQ,messageId);
+        if(isNull(messageContentByte64) || messageContentByte64.isEmpty()){
             return null;
         }
         return messageContentByte64;
@@ -80,23 +84,23 @@ public class MessageService {
     }
 
     private static String prepareSendMessageToAllLink(String chatId) {
-        return ChatWsController.SEND_MESSAGE_TO_ALL.replace(CHAT_ID_SEQ, chatId);
+        return SEND_MESSAGE_TO_ALL.replace(CHAT_ID_SEQ, chatId);
     }
 
     private static String prepareSendMessageToParticipantLink(String chatId, String participantId) {
-        return ChatWsController.SEND_MESSAGE_TO_PARTICIPANT.replace(CHAT_ID_SEQ, chatId).replace(PARTICIPANT_ID_SEQ, participantId);
+        return SEND_MESSAGE_TO_PARTICIPANT.replace(CHAT_ID_SEQ, chatId).replace(PARTICIPANT_ID_SEQ, participantId);
     }
 
     public static String prepareFetchChatMessagesHistoryDestinationLink(String chatId) {
-        return ChatWsController.FETCH_CHAT_MESSAGES_HISTORY.replace(CHAT_ID_SEQ, chatId);
+        return FETCH_CHAT_MESSAGES_HISTORY.replace(CHAT_ID_SEQ, chatId);
     }
 
     public static String prepareFetchPersonalChatMessagesLink(String chatId, String participantId) {
-        return ChatWsController.FETCH_PERSONAL_CHAT_MESSAGES.replace(CHAT_ID_SEQ, chatId).replace(PARTICIPANT_ID_SEQ, participantId);
+        return FETCH_PERSONAL_CHAT_MESSAGES.replace(CHAT_ID_SEQ, chatId).replace(PARTICIPANT_ID_SEQ, participantId);
     }
 
     public static String prepareFetchChatMessagesDestinationLink(String chatId) {
-        return ChatWsController.FETCH_CHAT_MESSAGES.replace(CHAT_ID_SEQ, chatId);
+        return FETCH_CHAT_MESSAGES.replace(CHAT_ID_SEQ, chatId);
     }
 
     public static String prepareSaveChatMessagesClusterName(String chatId) {
