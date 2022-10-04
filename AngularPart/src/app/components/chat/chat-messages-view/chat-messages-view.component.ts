@@ -2,8 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ProfileService} from "../../../service/profile.service";
 import {MessageService} from "../../../service/message.service";
 import {ParticipantModel} from "../../participant-creation/models/ParticipantModel";
-import {using} from "rxjs";
-import {log} from "util";
 
 @Component({
   selector: 'app-chat-messages-view',
@@ -11,6 +9,9 @@ import {log} from "util";
   styleUrls: ['./chat-messages-view.component.css']
 })
 export class ChatMessagesViewComponent implements OnInit {
+
+  @Input()
+  currentChat: any;
 
   currentUser: ParticipantModel | null = null;
 
@@ -21,8 +22,8 @@ export class ChatMessagesViewComponent implements OnInit {
   constructor(private messageService: MessageService, private profileService: ProfileService) {
     this.profileService.currentProfile.asObservable().subscribe((profile) => {
       this.currentUser = profile;
-      if (!this.messageService.subscribedOnChat && this.currentUser.chatId) {
-        this.messageService.subscribeOnChatMessages(this.currentUser.chatId)
+      if (!this.messageService.subscribedOnChat) {
+        this.messageService.subscribeOnChatMessages(this.currentChat.id)
       }
     })
     this.messageService.cameMessage.asObservable().subscribe((message) => {

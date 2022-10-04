@@ -1,5 +1,5 @@
 <div [hidden]="chatHidden" class="chat-container">
-  <app-chat-messages-view></app-chat-messages-view>
+  <app-chat-messages-view [currentChat]="chat"></app-chat-messages-view>
 </div>
 <form [formGroup]="formControl" class="container overflow-auto">
   <div class="row">

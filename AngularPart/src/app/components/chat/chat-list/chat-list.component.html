@@ -6,15 +6,17 @@
           <h2>{{chat.name}} <span
             style="font-weight: lighter;font-size: medium">{{chat.createdAt | date : "hh:mm a dd MM yy"}}</span></h2>
         </div>
-        <div class="col">
-          <button class="btn btn-primary w-100" id="switch-button-{{chat.id}}" data-toggle="modal"
-                  data-target="#profileModal">
+      </div>
+      <div class="row">
+        <div class="col-9">
+          <button class="btn btn-primary w-100" id="switch-button-{{chat.id}}">
             Join
           </button>
         </div>
+        <div class="col">
+          <button class="form-control" (click)="deleteChat(chat?.id)">delete</button>
+        </div>
       </div>
-      <p>{{chat.id}}</p>
-      <button class="form-control" (click)="deleteChat(chat?.id)">delete</button>
       <app-chat [chat]="chat" id="chat-container-{{chat.id}}" hidden></app-chat>
       <app-profile-holder [chat]="chat"></app-profile-holder>
     </div>

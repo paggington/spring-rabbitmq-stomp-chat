@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {ParticipantModel} from "./models/ParticipantModel";
 import {MessageService} from "../../service/message.service";
 
@@ -12,8 +12,6 @@ export class ParticipantCreationComponent implements OnInit, OnDestroy {
   createSessionProfile: EventEmitter<ParticipantModel> = new EventEmitter<ParticipantModel>();
 
   nickname: string = "";
-  @Input()
-  chat: any;
 
   sessionId: any;
 
@@ -21,7 +19,6 @@ export class ParticipantCreationComponent implements OnInit, OnDestroy {
     id: undefined,
     enteredAt: undefined,
     sessionId: undefined,
-    chatId: undefined,
     nickname: undefined
   }
 
@@ -38,12 +35,9 @@ export class ParticipantCreationComponent implements OnInit, OnDestroy {
   }
 
   createWithProvidedName() {
-    if (this.chat) {
-      this.model.chatId = this.chat.id;
-      this.model.nickname = this.nickname;
-      if (this.model.nickname && this.model.sessionId != null) {
-        this.createSessionProfile.emit(this.model);
-      }
+    this.model.nickname = this.nickname;
+    if (this.model.nickname && this.model.sessionId != null) {
+      this.createSessionProfile.emit(this.model);
     }
   }
 }

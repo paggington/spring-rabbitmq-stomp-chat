@@ -1,12 +1,10 @@
-<div *ngIf="!inRelease" class="text-center mt-5 w-100">
-  <img src="/assets/wait-for-it.gif" class="img-fluid">
-  <h3 class="mt-2">Coming soon!</h3>
+<div class="mt-3">
+  <app-chat-create></app-chat-create>
+  <app-chat-list></app-chat-list>
 </div>
-<div *ngIf="inRelease">
-  <div class="mt-3">
-    <app-chat-create></app-chat-create>
-    <app-chat-list></app-chat-list>
-  </div>
-  <app-profile-holder (profileCreationEmitter)="setProfileServiceUser($event)">
-  </app-profile-holder>
+<app-profile-holder (profileCreationEmitter)="setProfileServiceUser($event)">
+</app-profile-holder>
+
+<div *ngIf="!isUserProfileSet">
+  <app-participant-creation (createSessionProfile)="setUserProfile($any($event))"></app-participant-creation>
 </div>

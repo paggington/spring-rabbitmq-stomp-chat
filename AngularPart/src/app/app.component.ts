@@ -1,8 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MessageService} from "./service/message.service";
 import {ProfileService} from "./service/profile.service";
-import {ParticipantModel} from "./components/participant-creation/models/ParticipantModel";
-import {migrateEntryComponentsUsages} from "@angular/core/schematics/migrations/entry-components/util";
 import {environment} from "../environments/environment.prod";
 
 @Component({
@@ -15,9 +13,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   userHaveProfile: boolean = true;
 
-  inRelease:boolean = environment.released;
+  inRelease: boolean = environment.released;
 
-  constructor(private messageService: MessageService, private profileService: ProfileService) {
+  isUserProfileSet: boolean = this.checkIfUserHaveProfile();
+
+  constructor(private messageService: MessageService,
+              private profileService: ProfileService) {
   }
 
   public setProfileServiceUser(user: any) {
@@ -28,9 +29,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.messageService.connect();
+
   }
 
   ngOnDestroy(): void {
     this.messageService.disconnect();
+  }
+
+  private checkIfUserHaveProfile() {
+    return this.profileService.isUserProfileSet();
+  }
+
+  setUserProfile(userProfileValue: any) {
+    this.profileService.setProfile(userProfileValue);
   }
 }
