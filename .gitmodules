@@ -1,1 +1,9 @@
-
+[submodule "Troupe-data"]
+	path = Troupe-data
+	url = https://github.com/paggington/spring-rabbitmq-stomp-chat.git
+[submodule "Troupe-files"]
+	path = Troupe-files
+	url = https://github.com/paggington/spring-rabbitmq-stomp-chat.git
+[submodule "Troupe-api"]
+	path = Troupe-api
+	url = https://github.com/paggington/spring-rabbitmq-stomp-chat.git
