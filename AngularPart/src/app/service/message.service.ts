@@ -5,6 +5,7 @@ import {BehaviorSubject, Observable, Observer, Subject} from "rxjs";
 import {HttpClient, HttpEvent, HttpParams} from "@angular/common/http";
 import {round} from "@popperjs/core/lib/utils/math";
 import {ParticipantModel} from "../components/participant-creation/models/ParticipantModel";
+import {ProfileService} from "./profile.service";
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class MessageService {
 
   public subscribedOnChat: boolean = false;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private profileService: ProfileService) {
   }
 
   public connect(): void {
@@ -57,6 +58,7 @@ export class MessageService {
       sessionId: () => {
         let sessionId = round(Math.floor(Math.random() * 10000)).toFixed(12).toString().split(".")[0];
         this.userSession.next(sessionId)
+        this.profileService.setSessionIdForUser(sessionId);
         return sessionId;
       }
     })

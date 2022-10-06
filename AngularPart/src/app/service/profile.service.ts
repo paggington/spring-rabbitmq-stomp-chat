@@ -6,9 +6,28 @@ import {ParticipantModel} from "../components/participant-creation/models/Partic
   providedIn: 'root'
 })
 export class ProfileService {
-  currentProfile: Subject<ParticipantModel> = new Subject<ParticipantModel>()
+  currentProfile: Subject<any> = new Subject<any>()
 
   constructor() {
+    let currentLocalStorageProfile = this.loadUserProfile()
+    if (currentLocalStorageProfile) {
+      currentLocalStorageProfile = JSON.parse(currentLocalStorageProfile)
+      // @ts-ignore
+      this.currentProfile.next(currentLocalStorageProfile);
+    }
+    this.currentProfile.asObservable().subscribe(user => {
+      localStorage.setItem('profile', JSON.stringify(user))
+    })
+  }
+
+  public setSessionIdForUser(sessionId: any) {
+    let currentUserProfile = this.loadUserProfile()
+    if (currentUserProfile) {
+      currentUserProfile = JSON.parse(currentUserProfile);
+      // @ts-ignore
+      currentUserProfile.sessionId = sessionId
+      this.currentProfile.next(currentUserProfile)
+    }
   }
 
   public setProfile(userModel: ParticipantModel) {
