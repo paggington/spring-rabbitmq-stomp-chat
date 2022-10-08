@@ -28,6 +28,8 @@ export class MessageService {
 
   public subscribedOnChat: boolean = false;
 
+  private chatMessagesSubscription: any;
+
   constructor(private http: HttpClient, private profileService: ProfileService) {
   }
 

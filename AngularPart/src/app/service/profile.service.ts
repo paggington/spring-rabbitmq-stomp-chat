@@ -9,10 +9,8 @@ export class ProfileService {
   currentProfile: Subject<any> = new Subject<any>()
 
   constructor() {
-    let currentLocalStorageProfile = this.loadUserProfile()
+    let currentLocalStorageProfile = this.loadUserProfileParsed()
     if (currentLocalStorageProfile) {
-      currentLocalStorageProfile = JSON.parse(currentLocalStorageProfile)
-      // @ts-ignore
       this.currentProfile.next(currentLocalStorageProfile);
     }
     this.currentProfile.asObservable().subscribe(user => {
@@ -21,9 +19,8 @@ export class ProfileService {
   }
 
   public setSessionIdForUser(sessionId: any) {
-    let currentUserProfile = this.loadUserProfile()
+    let currentUserProfile = this.loadUserProfileParsed()
     if (currentUserProfile) {
-      currentUserProfile = JSON.parse(currentUserProfile);
       // @ts-ignore
       currentUserProfile.sessionId = sessionId
       this.currentProfile.next(currentUserProfile)
@@ -32,7 +29,7 @@ export class ProfileService {
 
   public setProfile(userModel: ParticipantModel) {
     this.currentProfile.next(userModel);
-    localStorage.setItem('profile', JSON.stringify(userModel))
+    localStorage.setItem('profile', JSON.stringify(userModel));
   }
 
   public isUserProfileSet() {
@@ -40,7 +37,14 @@ export class ProfileService {
     return profile !== 'undefined' && profile !== null
   }
 
-  public loadUserProfile() {
+  public loadUserProfileNotParsed() {
     return localStorage.getItem('profile');
+  }
+
+  public loadUserProfileParsed() {
+    let profile = this.loadUserProfileNotParsed();
+    if (profile) {
+      return JSON.parse(profile);
+    }
   }
 }

@@ -20,6 +20,15 @@ export class ChatMessagesViewComponent implements OnInit {
   previousMessage: any;
 
   constructor(private messageService: MessageService, private profileService: ProfileService) {
+
+  }
+
+  ngOnInit(): void {
+    this.init();
+    this.loadCurrentUserProfile();
+  }
+
+  private init() {
     this.profileService.currentProfile.asObservable().subscribe((profile) => {
       this.currentUser = profile;
       if (!this.messageService.subscribedOnChat) {
@@ -31,7 +40,9 @@ export class ChatMessagesViewComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {
+  private loadCurrentUserProfile() {
+    if (!this.currentUser) {
+      this.currentUser = this.profileService.loadUserProfileParsed();
+    }
   }
-
 }

@@ -3,6 +3,7 @@ import {MessageService} from "../../service/message.service";
 import {ParticipantModel} from "../participant-creation/models/ParticipantModel";
 import {ProfileService} from "../../service/profile.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {ChatHolderService} from "../../service/chat-holder.service";
 
 @Component({
   selector: 'app-chat',
@@ -25,13 +26,16 @@ export class ChatComponent implements OnInit, OnDestroy {
     message: new FormControl([''], [Validators.required])
   })
 
-  constructor(private messageService: MessageService, private profileService: ProfileService) {
+  constructor(private messageService: MessageService,
+              private profileService: ProfileService,
+              private chatHolderService: ChatHolderService) {
     if (this.chat && this.chatHidden) {
       messageService.joinChat(this.chat.id);
     }
     if (this.profileService.currentProfile) {
       this.profileService.currentProfile.asObservable().subscribe((profile) => {
         this.currentUser = profile;
+        this.subscribeOnChat();
       })
     }
   }
@@ -41,6 +45,17 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    if (!this.currentUser) {
+      this.currentUser = this.profileService.loadUserProfileParsed();
+    }
+  }
+
+  subscribeOnChat() {
+    this.chatHolderService.pickedChat.asObservable().subscribe(chat => {
+      if (chat) {
+        this.chat = chat;
+      }
+    })
   }
 
   changeHiddenState() {
@@ -58,6 +73,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   sendMessage() {
+    console.log('this user', this.currentUser)
     if (this.currentUser) {
       if (this.messageContent && this.messageContent.trim().length) {
         this.messageService.sendMessage(this.messageContent, this.chat.id, this.currentUser, this.file);

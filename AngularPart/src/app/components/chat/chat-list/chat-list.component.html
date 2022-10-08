@@ -9,7 +9,7 @@
       </div>
       <div class="row">
         <div class="col-9">
-          <button class="btn btn-primary w-100" id="switch-button-{{chat.id}}">
+          <button class="btn btn-primary w-100" id="switch-button-{{chat.id}}" (click)="setPickedChat(chat)">
             Join
           </button>
         </div>
@@ -22,5 +22,3 @@
     </div>
   </div>
 </div>
-
-
